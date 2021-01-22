@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="dpg" basedir="." default="assemble">
+    <property name="dist.dir" location="dist" />
+    <property name="dist.name" value="${ant.project.name}.jar" />
+    <property name="dist.loc" location="${dist.dir}/${dist.name}" />
+	
+	<property name="config.dir" location="config" />
+    <property name="lib.dir" location="lib" />
+    <property name="src.dir" location="src" />
+    <property name="bin.dir" location="bin" />
+	
+    <property name="devlib.loc" location="../developer-interface/developer-interface.jar" />
+
+    <fileset id="libraries" dir="${lib.dir}">
+        <include name="*.jar" />
+    </fileset>
+
+    <path id="libraries.path">
+        <fileset refid="libraries"/>
+        <pathelement location="${devlib.loc}"/>
+    </path>
+	
+	<target name="download">
+        <mkdir dir="${lib.dir}" />
+    	<get src="https://repo.maven.apache.org/maven2/org/ow2/asm/asm/9.0/asm-9.0.jar" dest="${lib.dir}" />
+       	<get src="https://repo.maven.apache.org/maven2/org/ow2/asm/asm-analysis/9.0/asm-analysis-9.0.jar" dest="${lib.dir}" />
+    	<get src="https://repo.maven.apache.org/maven2/org/ow2/asm/asm-commons/9.0/asm-commons-9.0.jar" dest="${lib.dir}" />
+    	<get src="https://repo.maven.apache.org/maven2/org/ow2/asm/asm-tree/9.0/asm-tree-9.0.jar" dest="${lib.dir}" />
+    	<get src="https://repo.maven.apache.org/maven2/org/ow2/asm/asm-util/9.0/asm-util-9.0.jar" dest="${lib.dir}" />
+	</target>
+
+    <target name="compile" depends="download">
+        <delete dir="${bin.dir}" />
+        <mkdir dir="${bin.dir}" />
+        <javac srcdir="${src.dir}" destdir="${bin.dir}" classpathref="libraries.path" encoding="utf8" debug="true">
+        </javac>
+        <mkdir dir="${dist.dir}"/>
+        <jar destfile="${dist.loc}">
+            <fileset dir="${bin.dir}">
+                <exclude name="**/*test*" />
+            </fileset>
+            <fileset dir="${src.dir}">
+                <include name="**/**.gif" />
+                <include name="**/**.properties"/>
+            </fileset>
+            <manifest>
+                <attribute name="Main-Class"
+                    value="org.javelus.dpg.DynamicPatchGenerator"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="clean">
+        <delete dir="${bin.dir}" />
+        <delete dir="${dist.dir}" />
+    </target>
+    <target name="assemble" depends="clean, compile">
+        <mkdir dir="${dist.dir}/lib" />
+        <copy todir="${dist.dir}/lib">
+            <fileset refid="libraries" />
+        </copy>
+        <copy todir="${dist.dir}/lib" file="${devlib.loc}"></copy>
+        <copy todir="${dist.dir}">
+            <fileset dir="${config.dir}">
+                <include name="run*" />
+                <include name="lcp.bat" />
+            </fileset>
+        </copy>
+        <chmod file="${dist.dir}/run.sh" perm="+x"/>
+        <chmod file="${dist.dir}/run_gui.sh" perm="+x"/>
+    </target>
+</project>

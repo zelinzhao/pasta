@@ -1,0 +1,289 @@
+<html>
+<!--
+ Copyright (C) 2015, 2016, 2017, 2018 XStream committers.
+ All rights reserved.
+ 
+ The software in this package is published under the terms of the BSD
+ style license a copy of which has been included with this distribution in
+ the LICENSE.txt file.
+ 
+ Created on 10. December 2015 by Joerg Schaible
+ -->
+  <head>
+    <title>Benchmarks</title>
+        <style type="text/css">
+            #content td { text-align: right;}
+            #content dt { font-weight: bold;}
+        </style>
+  </head>
+
+  <body>
+    <h2 id="introduction">Introduction</h2>
+
+    <p>Benchmark results are always dependent on a very individual setup. Normally it is not useful to generalize such results
+    for every use case, but it can give you a hint. However, if you're really in the need of maximum performance, you should
+    probably create an own benchmark with your objects or even use a profiler to detect the real hot spots in your application.</p>
+
+	<p>XStream uses the Java Microbenchmark Harness (<a href="http://openjdk.java.net/projects/code-tools/jmh/">JMH</a>)
+	of the JDK Tools as benchmark framework starting with version 1.4.9. As result it contains a ZIP file
+	(xstream-jmh-&lt;version&gt;-app.zip) as new artifact containing anything required to run the benchmarks. Unpack
+	the file and use the scripts in the <em>bin</em> directory to execute the benchmarks. Use option -h to look at the
+	options	provided by JMH. You may exchange the libraries in the <em>lib</em> directory with other versions of
+	XStream or the individual parsers or you may even add new JMH benchmarks to the default ones of XStream.</p>
+	
+	<p>All benchmark values below measure the average throughput in nanosecond per operation. JMH provides additional
+	measurement options, see online help. The maximum deviation for each benchmark is recorded in the reference files
+	of	the distributed ZIP file. The benchmark is executed on Linux 4.14.65 Gentoo 64-bit system with an Intel Core i7
+	CPU 920 of 2.67 GHz. Note again, that these values are no replacement for real profiler results and they may
+    vary from run to run (see reference files) due to this machine's background processes. However, it can give you some
+    idea of what you can expect using different parser technologies.</p>
+	
+    <h2 id="parser">Parser Benchmark</h2>
+	
+	<p>The values represent the average throughput of 15 runs with a single thread. The benchmarks emphasis the parser
+	efficiency for different structures.</p>
+	
+    <table summary="Benchmark for all parsers supported by XStream using different object structures">
+      <tr>
+        <th>Parser</th>
+        <th>Text</th>
+        <th>Array</th>
+        <th>Nested</th>
+      </tr>
+      <tr>
+        <th>W3C DOM (Oracle JDK 1.8.0_181)</th>
+        <td>9710278.896</td>
+        <td>53954694.751</td>
+        <td>5148010.389</td>
+      </tr>
+      <tr>
+        <th>JDOM (1.1.3)</th>
+        <td>6387821.035</td>
+        <td>6898339.792</td>
+        <td>14111857.552</td>
+      </tr>
+      <tr>
+        <th>JDOM 2 (2.0.5)</th>
+        <td>5921949.583</td>
+        <td>8723291.385</td>
+        <td>10579620.188</td>
+      </tr>
+      <tr>
+        <th>DOM4J (1.6.1)</th>
+        <td>7452345.867</td>
+        <td>93099746.029</td>
+        <td>5533035.930</td>
+      </tr>
+      <tr>
+        <th>XOM (1.1)</th>
+        <td>8204769.944</td>
+        <td>42486494.920</td>
+        <td>8086714.065</td>
+      </tr>
+      <tr>
+        <th>StAX (BEA 1.2.0)</th>
+        <td>2879876.995</td>
+        <td>666062.149</td>
+        <td>572549.126</td>
+      </tr>
+      <tr>
+        <th>StAX (Woodstox 3.2.7)</th>
+        <td>1845769.311</td>
+        <td>632147.776</td>
+        <td>604788.852</td>
+      </tr>
+      <tr>
+        <th>StAX (Oracle JDK 1.8.0_131)</th>
+        <td>7444273.102</td>
+        <td>706572.092</td>
+        <td>617636.917</td>
+      </tr>
+      <tr>
+        <th>XPP (Xpp3 min 1.1.4c)</th>
+        <td>2155470.575</td>
+        <td>661082.180</td>
+        <td>12444913.194</td>
+      </tr>
+      <tr>
+        <th>XPP (kXML2 min 2.3.0)</th>
+        <td>3663477.841</td>
+        <td>854613.418</td>
+        <td>34372562.351</td>
+      </tr>
+      <tr>
+        <th>Binary (XStream 1.4.10)</th>
+        <td>1129812.942</td>
+        <td>383203.739</td>
+        <td>260233.635</td>
+      </tr>
+      <tr>
+        <th>Jettison (1.2)</th>
+        <td>3016232.225</td>
+        <td>555908.503</td>
+        <td>619961.028</td>
+      </tr>
+    </table>
+  
+    <dl>
+      <dt>Text</dt>
+      <dd>A single element with a text of 100.000 characters.</dd>
+      <dt>Array</dt>
+      <dd>A single element with 1.000 child elements.</dd>
+      <dt>Nested</dt>
+      <dd>Nested elements in 1000 levels (since version 1.4.10).</dd>
+    </dl>
+	
+    <h2 id="converterType">Converter Type Benchmark</h2>
+
+	<p>The values represent the average throughput of 16 runs with four threads using the Xpp3 parser for a structure
+	with 1.000 elements. The benchmarks demonstrate the different converter types that can be used for a standard Java
+	class.</p>
+	
+    <table summary="Benchmark for different converter types of XStream">
+      <tr>
+        <th>Converter Type</th>
+        <th>Throughput</th>
+      </tr>
+      <tr>
+        <th>Custom</th>
+        <td>9176744.283</td>
+      </tr>
+      <tr>
+        <th>Java Bean</th>
+        <td>18353984.976</td>
+      </tr>
+      <tr>
+        <th>Reflection</th>
+        <td>23371721.858</td>
+      </tr>
+    </table>
+  
+    <dl>
+      <dt>Custom</dt>
+      <dd>A converter especially written for the Java type to convert.</dd>
+      <dt>Java Bean</dt>
+      <dd>Usage of the generic JavaBeanConverter, since the Java type respects the Java Bean contract.</dd>
+      <dt>Reflection</dt>
+      <dd>Usage of the generic converter based on reflection.</dd>
+    </dl>
+	
+    <h2 id="stringConverter">String Converter Benchmark</h2>
+
+	<p>The values represent the average throughput of 16 runs with four threads using the Xpp3 parser for a structure
+	with 10.000 string elements of various sizes and duplicates. The benchmarks demonstrate different implementations
+	and configurations of the StringConverter.</p>
+	
+    <table summary="Benchmark for different StringConverter strategies">
+      <tr>
+        <th>StringConverter Strategy</th>
+        <th>Throughput</th>
+      </tr>
+      <tr>
+        <th>No Cache</th>
+        <td>9422597.717</td>
+      </tr>
+      <tr>
+        <th>Intern</th>
+        <td>12576002.757</td>
+      </tr>
+      <tr>
+        <th>ConcurrentMap (length limit)</th>
+        <td>10411028.373</td>
+      </tr>
+      <tr>
+        <th>ConcurrentMap (unlimited)</th>
+        <td>10666492.267</td>
+      </tr>
+      <tr>
+        <th>Sync'd WeakCache (length limit)</th>
+        <td>10948390.386</td>
+      </tr>
+      <tr>
+        <th>Sync'd WeakCache (unlimited)</th>
+        <td>11917404.787</td>
+      </tr>
+    </table>
+  
+    <dl>
+      <dt>No Cache</dt>
+      <dd>An implementation that does not cache deserialized String values with the consequence that repeated values
+      will always allocate separate memory.</dd>
+      <dt>Intern</dt>
+      <dd>An implementation that uses String.intern() to cache the individual values. The memory pool used for the
+      values is dependent on the JDK version. Up to Java 7 this was the permanent generation space i.e. the memory has
+      to be shared with all loaded classes. It is up to the garbage collection when these string values are freed
+      again.</dd>
+      <dt>ConcurrentMap (length limit)</dt>
+      <dd>An implementation that uses a ConcurrentHashMap as cache for strings of limited length (38 characters). The
+      lifetime of the cache is equivalent with the lifetime of the XStream instance.</dd>
+      <dt>ConcurrentMap (unlimited)</dt>
+      <dd>An implementation that uses a ConcurrentHashMap as cache for all strings. The lifetime of the cache is
+      equivalent with the lifetime of the XStream instance.</dd>
+      <dt>Sync'd WeakCache (length limit)</dt>
+      <dd>An implementation that uses a WeakCache for strings of limited length (38 characters). This cache uses weak 
+      references for its keys and values. An entry is therefore only kept as long as the deserialized object structure
+      is referencing it. This is XStream's default strategy.</dd>
+      <dt>Syn'd WeakCache (unlimited)</dt>
+      <dd>An implementation that uses a WeakCache for all strings. This cache uses weak references for its keys and
+      values. An entry is therefore ony kept as long as the deserialized object structure is referencing it.</dd>
+    </dl>
+	
+    <h2 id="nameCoder">Name Coder Benchmark</h2>
+
+	<p>The values represent the average throughput of 25 runs with four threads using the Xpp3 parser for a structure
+	with 250 nested elements using names invalid for XML elements. The benchmarks demonstrate different implementation
+	strategies for a NameCoder to create valid tag names in XML.</p>
+	
+    <table summary="Benchmark for different NameCoder strategies">
+      <tr>
+        <th>NameCoder Implementation</th>
+        <th>Throughput</th>
+      </tr>
+      <tr>
+        <th>No Coding</th>
+        <td>4190972.243</td>
+      </tr>
+      <tr>
+        <th>Dollar Coding</th>
+        <td>4621025.135</td>
+      </tr>
+      <tr>
+        <th>Escaped Underscore Coding</th>
+        <td>5896886.514</td>
+      </tr>
+      <tr>
+        <th>Cached Escaped Underscore Coding</th>
+        <td>4350643.046</td>
+      </tr>
+      <tr>
+        <th>Xml Friendly Coding</th>
+        <td>4938586.549</td>
+      </tr>
+    </table>
+  
+    <dl>
+      <dt>No Coding</dt>
+      <dd>An implementation that does not encode the names of XML elements. It relies on the fact that the object graph
+      does not contain elements with invalid XML names, because the name of the class types and members are either
+      conforming or have been aliased.</dd>
+      <dt>Dollar Coding</dt>
+      <dd>An implementation that uses String.replace to replace any dollar sign with '&#xb7;' (middle dot), a valid
+      character normally not used for Java identifiers. In typical Java code there are no other invalid characters used
+      for Java identifiers, however, Java allows identifiers to contain a wide range of UTF-8 characters and the JVM
+      has even less restrictions.</dd>
+      <dt>Escaped Underscore Coding</dt>
+      <dd>An implementation that uses a StringBuilder to create the XML name by replacing any dollar sign with '_-' and
+      escapes every plain underscore with two ones. The implementation will therefore only use characters in the
+      standard ASCII range. It is not possible to use a simple minus sign as replacement because it is not a valid
+      first character for XML names. However, the comments about Java identifiers and JVM identifiers from the Dollar
+      Coding still apply.</dd>
+      <dt>Cached Escaped Underscore Coding</dt>
+      <dd>An implementation that implements a cache for the NameCoder that escapes the underscores.</dd>
+      <dt>Xml Friendly Coding</dt>
+      <dd>The default implementation of XStream using a StringBuilder and a cache, encoding any character that is
+      invalid for XML names. It implements also the underscore escaping for compatibility reasons with XML created by
+      earlier versions of XStream.</dd>
+    </dl>
+  </body>
+</html>
+  

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="developer-interface" basedir="." default="compile">
+    <property name="dist.name" value="${ant.project.name}.jar"/>
+    <property name="dist.dir" location="${basedir}"/>
+    <property name="dist.loc" location="${dist.dir}/${dist.name}"/>
+
+    <property name="lib.dir" location="lib" />
+    <property name="src.dir" location="src" />
+    <property name="bin.dir" location="bin" />
+	
+    <target name="compile" >
+        <delete dir="${bin.dir}"/>
+        <mkdir dir="${bin.dir}"/>
+        <javac srcdir="${src.dir}"
+            source="1.8"
+            target="1.8"
+            destdir="${bin.dir}"
+            encoding="utf8"
+            debug="on">
+        </javac>
+
+        <jar destfile="${dist.loc}">
+            <fileset dir="${bin.dir}">
+                <include name="**/**.class"/>
+                <exclude name="**/test/**.class"/>
+            </fileset>
+            <manifest>
+                <attribute name="Premain-Class"
+                    value="org.javelus.agent.WebAgent"/>
+            </manifest>
+        </jar>
+
+    </target>
+    <target name="clean">
+        <delete dir="${bin.dir}"/>
+        <delete file="${dist.loc}"/>
+    </target>
+</project>

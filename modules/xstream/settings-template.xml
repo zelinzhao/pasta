@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <!--
+     Copyright (C) 2006, 2007, 2010, 2015, 2016 XStream committers.
+     All rights reserved.
+     
+     The software in this package is published under the terms of the BSD
+     style license a copy of which has been included with this distribution in
+     the LICENSE.txt file.
+     
+     Created on 30. July 2006 by Mauro Talevi
+     -->
+<settings>
+  <servers>
+    <server>
+      <id>ossrh-snapshots</id>
+      <username>your-sonatype.org-id</username>
+      <password>your-sonatype.org-pwd</password>
+    </server>
+    <server>
+      <id>ossrh-staging</id>
+      <username>your-sonatype.org-id</username>
+      <password>your-sonatype.org-pwd</password>
+    </server>      
+  </servers>
+</settings>

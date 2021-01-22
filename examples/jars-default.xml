@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dsu>
+    <!--must have these -->
+    <junitJar>/default/location/to/pasta/target/lib/junit-4.12.jar</junitJar>
+    <hamcrestJar>/default/location/to/pasta/target/lib/hamcrest-core-1.3.jar</hamcrestJar>
+    <xstreamJar>/default/location/to/pasta/modules/xstream/xstream/target/xstream-1.4.11.1.jar</xstreamJar>
+    <xstreamLibs>/default/location/to/pasta/modules/xstream/xstream/alllib</xstreamLibs>
+    <agentJar>/default/location/to/pasta/modules/agent/target/agent-1.0.jar</agentJar>
+    <verifyJar>/default/location/to/pasta/target/pasta-1.0-full.jar</verifyJar>
+</dsu>

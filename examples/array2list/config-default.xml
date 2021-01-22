@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dsu>
+    <commitRoot>/default/location/to/pasta/examples/array2list</commitRoot>
+    <usefulTestFile>${commitRoot}/UsefulTest.txt</usefulTestFile>
+    <testRoot>${commitRoot}/.pasta/target/test/</testRoot>
+    <old>
+        <root>${commitRoot}/old</root>
+        <projectSourceDir>${old.root}</projectSourceDir>
+        <!--compiled analysis of this processor-->
+        <projectByteDir>${commitRoot}/.pasta/target/old</projectByteDir>
+        <!--compiled analysis of test cases-->
+        <testByteDir>${commitRoot}/.pasta/target/test/</testByteDir>
+
+        <jarDirs>
+        </jarDirs>
+    </old>
+    <new>
+        <root>${commitRoot}/new</root>
+        <projectSourceDir>${new.root}</projectSourceDir>
+        <!--compiled analysis of this processor-->
+        <projectByteDir>${commitRoot}/.pasta/target/new</projectByteDir>
+        <!--compiled analysis of test cases-->
+        <testByteDir>${commitRoot}/.pasta/target/test</testByteDir>
+
+        <jarDirs>
+        </jarDirs>
+    </new>
+
+    <update>
+        <class>Example</class>
+        <newField>
+            <type>java.util.List&lt;java.lang.String&gt;</type>
+            <!-- The original name of this field, also used to compare tag -->
+            <name>f</name>
+        </newField>
+    </update>
+
+    <onlyCompareTag></onlyCompareTag>
+    <apiTypes>
+        <!--Solve api methods in these types, they maybe useful for transformers. -->
+        <!--Assume maximum two type parameters. -->
+        <type></type>
+    </apiTypes>
+</dsu>
