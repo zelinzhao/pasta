@@ -1,0 +1,1 @@
+We are applying for the *reusable* badge for our artifact. The PASTA tool has a user-friendly command-line interface, and we maintained a well-documented source code repository. Follow-up researchers can reproduce our work via our packed docker image.

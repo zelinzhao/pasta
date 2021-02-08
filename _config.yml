@@ -1,0 +1,8 @@
+include: [artifact]
+theme: jekyll-theme-cayman
+defaults:
+  -
+    scope:
+      path: ""
+    values:
+      layout: "page"
